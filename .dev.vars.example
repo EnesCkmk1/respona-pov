@@ -1,0 +1,4 @@
+# Copy to .dev.vars for local development (never commit .dev.vars)
+# Optional: swap Workers AI for an external provider later
+# OPENAI_API_KEY=
+# ANTHROPIC_API_KEY=
