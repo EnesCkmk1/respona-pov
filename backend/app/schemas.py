@@ -76,3 +76,21 @@ class AgentTurn(BaseModel):
     agent_text: str
     audio_url: str | None = None
     latency_ms: int
+
+
+class CartItem(BaseModel):
+    name: str
+    qty: int = Field(gt=0)
+    price: int = Field(ge=0)
+
+
+class CallTurn(BaseModel):
+    """A turn during an order-taking call, including the running cart."""
+
+    user_text: str
+    agent_text: str
+    cart: list[CartItem]
+    cart_total: int
+    finalized: bool
+    order: Order | None = None
+    latency_ms: int

@@ -40,11 +40,31 @@ uvicorn app.main:app --reload
 ```bash
 # List orders (in-memory demo data in stub mode)
 curl http://localhost:8000/restaurants/00000000-0000-0000-0000-000000000001/orders
+```
 
-# Simulate a call turn over WebSocket (e.g. with wscat):
-#   wscat -c ws://localhost:8000/ws/call/00000000-0000-0000-0000-000000000001
-#   > Hej, jeg vil gerne bestille en margherita
-#   < {"user_text": "...", "agent_text": "...", "latency_ms": 1}
+### Simulate a whole call (no audio, no WS client)
+
+The agent understands the menu, builds a cart, and persists the order when the
+caller is done. Replay a scripted call with one request:
+
+```bash
+curl -X POST \
+  http://localhost:8000/restaurants/00000000-0000-0000-0000-000000000001/simulate-call \
+  -H "Content-Type: application/json" \
+  -d '{"utterances": [
+        "Hej, jeg vil gerne bestille to margherita",
+        "Og en cola",
+        "Det var det, tak"
+      ]}'
+```
+
+The last turn contains `finalized: true` and the created `order`. Re-list orders
+(above) and you'll see it. The same logic runs over the WebSocket:
+
+```
+wscat -c ws://localhost:8000/ws/call/00000000-0000-0000-0000-000000000001
+> Hej, jeg vil gerne bestille en pepperoni
+< {"user_text": "...", "agent_text": "...", "cart": [...], "finalized": false, ...}
 ```
 
 ## How the stubs map to real providers
