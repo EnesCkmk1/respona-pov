@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://voiceagent-pov.workers.dev/sitemap.xml

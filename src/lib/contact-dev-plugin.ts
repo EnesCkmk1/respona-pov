@@ -18,6 +18,23 @@ export function contactApiDevPlugin(): Plugin {
             chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
           }
           const body = JSON.parse(Buffer.concat(chunks).toString());
+
+          // Honeypot: mirror production behavior in dev.
+          if (
+            typeof body?.company_website === "string" &&
+            body.company_website
+          ) {
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "application/json");
+            res.end(
+              JSON.stringify({
+                ok: true,
+                message: "Besked modtaget (dev mode)"
+              })
+            );
+            return;
+          }
+
           const parsed = contactSchema.safeParse(body);
 
           if (!parsed.success) {

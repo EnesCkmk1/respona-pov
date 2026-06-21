@@ -28,6 +28,7 @@ export function ContactForm({
 
     const form = e.currentTarget;
     const data = new FormData(form);
+    const honeypot = String(data.get("company_website") ?? "");
     const parsed = contactSchema.safeParse({
       name: data.get("name"),
       email: data.get("email"),
@@ -42,7 +43,7 @@ export function ContactForm({
     }
 
     try {
-      await submitContact(parsed.data);
+      await submitContact(parsed.data, honeypot);
       setStatus("success");
       form.reset();
     } catch (err) {
@@ -86,6 +87,20 @@ export function ContactForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <div
+        aria-hidden="true"
+        className="absolute left-[-9999px] h-0 w-0 overflow-hidden"
+      >
+        <label htmlFor="company_website">Lad dette felt være tomt</label>
+        <input
+          id="company_website"
+          name="company_website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelClass}>
@@ -159,7 +174,7 @@ export function ContactForm({
       <button
         type="submit"
         disabled={status === "loading"}
-        className={`btn-primary w-full disabled:opacity-60 ${isDark ? "!bg-emerald-500 hover:!bg-emerald-400" : ""}`}
+        className={`btn-primary w-full disabled:opacity-60 ${isDark ? "!bg-indigo-500 hover:!bg-indigo-400" : ""}`}
       >
         {status === "loading" ? (
           <>

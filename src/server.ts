@@ -2,6 +2,12 @@ import { createWorkersAI } from "workers-ai-provider";
 import { ZodError } from "zod";
 import { callable, routeAgentRequest, type Schedule } from "agents";
 import { contactSchema } from "./lib/contact";
+import {
+  checkRateLimit,
+  getClientIp,
+  jsonResponse,
+  SECURITY_HEADERS
+} from "./lib/security";
 import { getSchedulePrompt, scheduleSchema } from "agents/schedule";
 import { AIChatAgent, type OnChatMessageOptions } from "@cloudflare/ai-chat";
 import {
@@ -201,12 +207,27 @@ If the user asks to schedule a task, use the schedule tool to schedule the task.
   }
 }
 
+// Only allow same-origin cross-origin requests to the API. The marketing form
+// is served from the same origin, so this never blocks legitimate traffic.
+function corsHeadersFor(request: Request, url: URL): Record<string, string> {
+  const origin = request.headers.get("Origin");
+  if (origin && origin === url.origin) {
+    return {
+      "Access-Control-Allow-Origin": origin,
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+      Vary: "Origin"
+    };
+  }
+  return {};
+}
+
 export default {
   async fetch(request: Request, env: Env) {
     const url = new URL(request.url);
 
     if (url.pathname === "/api/health") {
-      return Response.json({
+      return jsonResponse({
         status: "ok",
         service: "voiceagent-pov",
         environment: env.ENVIRONMENT
@@ -218,21 +239,57 @@ export default {
         const result = await env.DB.prepare("SELECT 1 AS ok").first<{
           ok: number;
         }>();
-        return Response.json({ status: "ok", db: result });
+        return jsonResponse({ status: "ok", db: result });
       } catch (error) {
-        return Response.json(
-          {
-            status: "error",
-            message: error instanceof Error ? error.message : String(error)
-          },
+        console.error("DB health check failed:", error);
+        return jsonResponse(
+          { status: "error", message: "Database unavailable" },
           { status: 500 }
         );
       }
     }
 
+    if (url.pathname === "/api/contact" && request.method === "OPTIONS") {
+      const cors = corsHeadersFor(request, url);
+      return new Response(null, {
+        status: Object.keys(cors).length ? 204 : 403,
+        headers: { ...SECURITY_HEADERS, ...cors }
+      });
+    }
+
     if (url.pathname === "/api/contact" && request.method === "POST") {
       try {
-        const body = contactSchema.parse(await request.json());
+        // Rate limit: max 5 submissions per IP per hour.
+        const ip = getClientIp(request);
+        const rl = await checkRateLimit(
+          env.DB,
+          "contact",
+          ip,
+          5,
+          60 * 60 * 1000
+        );
+        if (!rl.allowed) {
+          return jsonResponse(
+            { error: "For mange forsøg. Prøv igen senere." },
+            {
+              status: 429,
+              headers: { "Retry-After": String(rl.retryAfterSeconds) }
+            }
+          );
+        }
+
+        const raw = (await request.json()) as Record<string, unknown>;
+
+        // Honeypot: real users never fill this hidden field. Silently accept
+        // so bots don't learn they were caught, but never persist.
+        if (typeof raw.company_website === "string" && raw.company_website) {
+          return jsonResponse({
+            ok: true,
+            message: "Tak — vi vender tilbage snart!"
+          });
+        }
+
+        const body = contactSchema.parse(raw);
         const id = crypto.randomUUID();
 
         await env.DB.prepare(
@@ -242,34 +299,20 @@ export default {
           .bind(id, body.name, body.email, body.company || null, body.message)
           .run();
 
-        return Response.json({
+        return jsonResponse({
           ok: true,
           message: "Tak — vi vender tilbage snart!"
         });
       } catch (error) {
         if (error instanceof ZodError) {
-          return Response.json({ error: "Ugyldige felter" }, { status: 400 });
+          return jsonResponse({ error: "Ugyldige felter" }, { status: 400 });
         }
-        return Response.json(
-          {
-            error:
-              error instanceof Error
-                ? error.message
-                : "Kunne ikke gemme beskeden"
-          },
+        console.error("Contact submission failed:", error);
+        return jsonResponse(
+          { error: "Kunne ikke gemme beskeden" },
           { status: 500 }
         );
       }
-    }
-
-    if (url.pathname === "/api/contact" && request.method === "OPTIONS") {
-      return new Response(null, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type"
-        }
-      });
     }
 
     return (

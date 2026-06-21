@@ -14,12 +14,13 @@ export const contactSchema = z.object({
 export type ContactPayload = z.infer<typeof contactSchema>;
 
 export async function submitContact(
-  payload: ContactPayload
+  payload: ContactPayload,
+  honeypot = ""
 ): Promise<Response> {
   const res = await fetch("/api/contact", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
+    body: JSON.stringify({ ...payload, company_website: honeypot })
   });
 
   const data = (await res.json()) as {
