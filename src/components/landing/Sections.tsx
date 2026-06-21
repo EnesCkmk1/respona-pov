@@ -52,26 +52,44 @@ const features = [
   {
     icon: Headphones,
     title: "Tager imod henvendelser",
-    description: "Optager detaljer, bekræfter og sender data direkte til jeres system."
+    description:
+      "Optager detaljer, bekræfter og sender data direkte til jeres system."
   },
   {
     icon: Clock,
     title: "24/7 i drift",
-    description: "Aldrig en pause. Weekender, helligdage og myldretid — alt dækket."
+    description:
+      "Aldrig en pause. Weekender, helligdage og myldretid — alt dækket."
   },
   {
     icon: Bot,
     title: "Du har kontrollen",
-    description: "I bestemmer tone, scripts og hvilke spørgsmål agenten må besvare."
+    description:
+      "I bestemmer tone, scripts og hvilke spørgsmål agenten må besvare."
   }
 ];
 
 const demoLines = [
-  { speaker: "agent", text: "Hej, du har ringet til Voice Agent demo — hvad kan jeg hjælpe med?" },
-  { speaker: "caller", text: "Hej, jeg vil gerne høre om jeres løsning til kundeservice." },
-  { speaker: "agent", text: "Selvfølgelig. Vi tager imod opkald 24/7 med naturlig dansk stemme. Skal jeg booke en demo til jer?" },
-  { speaker: "caller", text: "Ja tak — vi er en voksende webshop med mange support-opkald." },
-  { speaker: "agent", text: "Perfekt. Jeg sender en bekræftelse på email og booker 15 minutter med teamet. God dag!" }
+  {
+    speaker: "agent",
+    text: "Hej, du har ringet til Voice Agent demo — hvad kan jeg hjælpe med?"
+  },
+  {
+    speaker: "caller",
+    text: "Hej, jeg vil gerne høre om jeres løsning til kundeservice."
+  },
+  {
+    speaker: "agent",
+    text: "Selvfølgelig. Vi tager imod opkald 24/7 med naturlig dansk stemme. Skal jeg booke en demo til jer?"
+  },
+  {
+    speaker: "caller",
+    text: "Ja tak — vi er en voksende webshop med mange support-opkald."
+  },
+  {
+    speaker: "agent",
+    text: "Perfekt. Jeg sender en bekræftelse på email og booker 15 minutter med teamet. God dag!"
+  }
 ];
 
 const conversations = [
@@ -110,7 +128,9 @@ function LiveDemoPlayer() {
     <div className="site-card overflow-hidden shadow-sm">
       <div className="flex items-center justify-between border-b border-site-border px-5 py-4">
         <div>
-          <p className="text-xs font-medium text-site-muted">Voice Agent · indgående</p>
+          <p className="text-xs font-medium text-site-muted">
+            Voice Agent · indgående
+          </p>
           <p className="text-sm font-semibold text-site-text">Live demo</p>
         </div>
         <div className="flex items-center gap-2">
@@ -155,7 +175,11 @@ function LiveDemoPlayer() {
           }}
           className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-site-accent"
         >
-          {playing ? <RotateCcw className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
+          {playing ? (
+            <RotateCcw className="h-3.5 w-3.5" />
+          ) : (
+            <Play className="h-3.5 w-3.5" />
+          )}
           {playing ? "Afspil igen" : "Afspil"}
         </button>
       </div>
@@ -174,8 +198,9 @@ export function HeroSection() {
             <span className="text-site-accent">Selv når I ikke gør.</span>
           </h1>
           <p className="fade-up fade-up-d2 mb-8 max-w-2xl text-lg leading-relaxed text-site-muted">
-            AI-drevet stemmeteknologi til dansk kundekontakt. Ingen mistede opkald, ingen
-            ventetid på linjen — kun flere henvendelser og roligere medarbejdere.
+            AI-drevet stemmeteknologi til dansk kundekontakt. Ingen mistede
+            opkald, ingen ventetid på linjen — kun flere henvendelser og
+            roligere medarbejdere.
           </p>
           <div className="fade-up fade-up-d3 flex flex-wrap gap-3">
             <a href="#contact" className="btn-primary">
@@ -198,7 +223,10 @@ export function HeroSection() {
 
 export function DemoSection() {
   return (
-    <section id="demo" className="border-b border-site-border bg-site-bg py-20 sm:py-24">
+    <section
+      id="demo"
+      className="border-b border-site-border bg-site-bg py-20 sm:py-24"
+    >
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-10 max-w-2xl">
           <p className="site-label mb-3">Live demo</p>
@@ -206,7 +234,8 @@ export function DemoSection() {
             Se hvordan det lyder i praksis
           </h2>
           <p className="mt-4 text-site-muted">
-            En kort demo af AI&apos;en i aktion — fra opkald til løst henvendelse.
+            En kort demo af AI&apos;en i aktion — fra opkald til løst
+            henvendelse.
           </p>
         </div>
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
@@ -218,7 +247,10 @@ export function DemoSection() {
                 "Håndterer flere opkald samtidig",
                 "Integrerer med jeres workflow"
               ].map((item) => (
-                <li key={item} className="flex items-center gap-3 text-site-text">
+                <li
+                  key={item}
+                  className="flex items-center gap-3 text-site-text"
+                >
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-site-accent/10 text-site-accent">
                     <Check className="h-3.5 w-3.5" strokeWidth={3} />
                   </span>
@@ -249,11 +281,15 @@ export function StatsSection() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map(({ value, label, description }) => (
             <article key={label} className="border-t-2 border-site-accent pt-6">
-              <p className="text-4xl font-extrabold tracking-tight text-site-text">{value}</p>
+              <p className="text-4xl font-extrabold tracking-tight text-site-text">
+                {value}
+              </p>
               <p className="mt-2 text-sm font-bold uppercase tracking-wide text-site-text">
                 {label}
               </p>
-              <p className="mt-3 text-sm leading-relaxed text-site-muted">{description}</p>
+              <p className="mt-3 text-sm leading-relaxed text-site-muted">
+                {description}
+              </p>
             </article>
           ))}
         </div>
@@ -264,7 +300,10 @@ export function StatsSection() {
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="border-b border-site-border bg-site-bg py-20 sm:py-24">
+    <section
+      id="features"
+      className="border-b border-site-border bg-site-bg py-20 sm:py-24"
+    >
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-14 max-w-2xl">
           <p className="site-label mb-3">Platform</p>
@@ -282,7 +321,9 @@ export function FeaturesSection() {
                 <Icon className="h-5 w-5" strokeWidth={2} />
               </div>
               <h3 className="mb-2 text-xl font-bold text-site-text">{title}</h3>
-              <p className="text-sm leading-relaxed text-site-muted">{description}</p>
+              <p className="text-sm leading-relaxed text-site-muted">
+                {description}
+              </p>
             </article>
           ))}
         </div>
@@ -301,7 +342,9 @@ export function DashboardSection() {
             <h2 className="text-3xl font-extrabold tracking-tight text-site-text sm:text-4xl">
               Hele driften. Samlet ét sted.
             </h2>
-            <p className="mt-3 text-site-muted">Bygget til teams — ikke til IT-folk.</p>
+            <p className="mt-3 text-site-muted">
+              Bygget til teams — ikke til IT-folk.
+            </p>
           </div>
           <div className="flex items-center gap-2 text-sm text-site-muted">
             <span className="relative flex h-2 w-2">
@@ -327,8 +370,12 @@ export function DashboardSection() {
                 ].map(({ label, value, delta }) => (
                   <div key={label}>
                     <p className="text-xs text-site-muted">{label}</p>
-                    <p className="mt-1 text-2xl font-extrabold text-site-text">{value}</p>
-                    <p className="mt-1 text-xs font-semibold text-site-accent">{delta}</p>
+                    <p className="mt-1 text-2xl font-extrabold text-site-text">
+                      {value}
+                    </p>
+                    <p className="mt-1 text-xs font-semibold text-site-accent">
+                      {delta}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -339,9 +386,14 @@ export function DashboardSection() {
               </p>
               <ul className="mt-4 divide-y divide-site-border">
                 {conversations.map(({ phone, summary }) => (
-                  <li key={phone} className="flex items-center justify-between py-3.5 first:pt-0">
+                  <li
+                    key={phone}
+                    className="flex items-center justify-between py-3.5 first:pt-0"
+                  >
                     <div>
-                      <p className="text-sm font-semibold text-site-text">{phone}</p>
+                      <p className="text-sm font-semibold text-site-text">
+                        {phone}
+                      </p>
                       <p className="text-xs text-site-muted">{summary}</p>
                     </div>
                     <Phone className="h-4 w-4 text-site-accent/60" />
@@ -369,24 +421,28 @@ export function ContactSection() {
               Klar til at høre mere?
             </h2>
             <p className="mb-8 max-w-md text-base leading-relaxed text-white/65">
-              15 minutter. Vi viser jer systemet og regner ROI&apos;en igennem sammen med jer.
-              Ingen binding.
+              15 minutter. Vi viser jer systemet og regner ROI&apos;en igennem
+              sammen med jer. Ingen binding.
             </p>
             <ul className="space-y-3 text-sm text-white/80">
-              {["Gratis intro-samtale", "Skræddersyet demo", "Svar inden 24 timer"].map(
-                (item) => (
-                  <li key={item} className="flex items-center gap-3">
-                    <Check className="h-4 w-4 text-emerald-400" strokeWidth={3} />
-                    {item}
-                  </li>
-                )
-              )}
+              {[
+                "Gratis intro-samtale",
+                "Skræddersyet demo",
+                "Svar inden 24 timer"
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-3">
+                  <Check className="h-4 w-4 text-emerald-400" strokeWidth={3} />
+                  {item}
+                </li>
+              ))}
             </ul>
           </div>
 
           <div className="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur sm:p-8">
             <h3 className="mb-1 text-lg font-bold">Send en besked</h3>
-            <p className="mb-6 text-sm text-white/55">Vi læser hver henvendelse personligt.</p>
+            <p className="mb-6 text-sm text-white/55">
+              Vi læser hver henvendelse personligt.
+            </p>
             <ContactForm variant="dark" />
           </div>
         </div>
@@ -403,7 +459,9 @@ export function SiteFooter() {
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-site-accent text-white">
             <Mic className="h-3.5 w-3.5" />
           </span>
-          <span className="text-xs font-bold tracking-[0.16em] text-site-text">VOICE AGENT</span>
+          <span className="text-xs font-bold tracking-[0.16em] text-site-text">
+            VOICE AGENT
+          </span>
         </div>
         <p className="text-center text-xs text-site-muted">
           © {new Date().getFullYear()} Voice Agent PoV · React · Cloudflare · D1

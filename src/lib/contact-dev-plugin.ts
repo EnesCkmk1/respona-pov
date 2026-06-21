@@ -24,16 +24,24 @@ export function contactApiDevPlugin(): Plugin {
             res.statusCode = 400;
             res.setHeader("Content-Type", "application/json");
             res.end(
-              JSON.stringify({ error: parsed.error.issues[0]?.message ?? "Ugyldige felter" })
+              JSON.stringify({
+                error: parsed.error.issues[0]?.message ?? "Ugyldige felter"
+              })
             );
             return;
           }
 
-          submissions.push({ ...parsed.data, id: crypto.randomUUID(), at: new Date().toISOString() });
+          submissions.push({
+            ...parsed.data,
+            id: crypto.randomUUID(),
+            at: new Date().toISOString()
+          });
 
           res.statusCode = 200;
           res.setHeader("Content-Type", "application/json");
-          res.end(JSON.stringify({ ok: true, message: "Besked modtaget (dev mode)" }));
+          res.end(
+            JSON.stringify({ ok: true, message: "Besked modtaget (dev mode)" })
+          );
         } catch {
           res.statusCode = 500;
           res.setHeader("Content-Type", "application/json");

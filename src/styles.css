@@ -99,7 +99,9 @@ body,
   letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 0.95rem 1.75rem;
-  transition: background 0.2s ease, transform 0.15s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
 }
 
 .btn-primary:hover {
@@ -143,12 +145,15 @@ body,
   padding: 0.75rem 1rem;
   font-size: 0.875rem;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .site-input:focus {
   border-color: var(--color-site-accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-site-accent) 18%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-site-accent) 18%, transparent);
 }
 
 .site-input::placeholder {

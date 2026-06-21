@@ -215,11 +215,16 @@ export default {
 
     if (url.pathname === "/api/health/db") {
       try {
-        const result = await env.DB.prepare("SELECT 1 AS ok").first<{ ok: number }>();
+        const result = await env.DB.prepare("SELECT 1 AS ok").first<{
+          ok: number;
+        }>();
         return Response.json({ status: "ok", db: result });
       } catch (error) {
         return Response.json(
-          { status: "error", message: error instanceof Error ? error.message : String(error) },
+          {
+            status: "error",
+            message: error instanceof Error ? error.message : String(error)
+          },
           { status: 500 }
         );
       }
@@ -237,13 +242,21 @@ export default {
           .bind(id, body.name, body.email, body.company || null, body.message)
           .run();
 
-        return Response.json({ ok: true, message: "Tak — vi vender tilbage snart!" });
+        return Response.json({
+          ok: true,
+          message: "Tak — vi vender tilbage snart!"
+        });
       } catch (error) {
         if (error instanceof ZodError) {
           return Response.json({ error: "Ugyldige felter" }, { status: 400 });
         }
         return Response.json(
-          { error: error instanceof Error ? error.message : "Kunne ikke gemme beskeden" },
+          {
+            error:
+              error instanceof Error
+                ? error.message
+                : "Kunne ikke gemme beskeden"
+          },
           { status: 500 }
         );
       }

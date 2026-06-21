@@ -2,8 +2,14 @@ import { useState, type FormEvent } from "react";
 import { CheckCircle2, Loader2, Mail, Send, User } from "lucide-react";
 import { contactSchema, submitContact } from "../../lib/contact";
 
-export function ContactForm({ variant = "light" }: { variant?: "light" | "dark" }) {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+export function ContactForm({
+  variant = "light"
+}: {
+  variant?: "light" | "dark";
+}) {
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const [error, setError] = useState<string | null>(null);
 
   const isDark = variant === "dark";
@@ -49,16 +55,22 @@ export function ContactForm({ variant = "light" }: { variant?: "light" | "dark" 
     return (
       <div
         className={`flex flex-col items-center justify-center rounded-xl px-8 py-14 text-center ${
-          isDark ? "border border-emerald-400/30 bg-emerald-400/5" : "border border-emerald-500/30 bg-emerald-500/5"
+          isDark
+            ? "border border-emerald-400/30 bg-emerald-400/5"
+            : "border border-emerald-500/30 bg-emerald-500/5"
         }`}
       >
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-500">
           <CheckCircle2 className="h-7 w-7" />
         </div>
-        <h3 className={`mb-2 text-xl font-semibold ${isDark ? "text-white" : "text-site-text"}`}>
+        <h3
+          className={`mb-2 text-xl font-semibold ${isDark ? "text-white" : "text-site-text"}`}
+        >
           Tak for din besked!
         </h3>
-        <p className={`mb-6 max-w-sm text-sm ${isDark ? "text-white/60" : "text-site-muted"}`}>
+        <p
+          className={`mb-6 max-w-sm text-sm ${isDark ? "text-white/60" : "text-site-muted"}`}
+        >
           Vi vender tilbage hurtigst muligt. Hold øje med din indbakke.
         </p>
         <button
@@ -80,7 +92,9 @@ export function ContactForm({ variant = "light" }: { variant?: "light" | "dark" 
             Navn *
           </label>
           <div className="relative">
-            <User className={`pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 ${iconClass}`} />
+            <User
+              className={`pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 ${iconClass}`}
+            />
             <input
               id="name"
               name="name"
@@ -95,7 +109,9 @@ export function ContactForm({ variant = "light" }: { variant?: "light" | "dark" 
             Email *
           </label>
           <div className="relative">
-            <Mail className={`pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 ${iconClass}`} />
+            <Mail
+              className={`pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 ${iconClass}`}
+            />
             <input
               id="email"
               name="email"
@@ -112,7 +128,12 @@ export function ContactForm({ variant = "light" }: { variant?: "light" | "dark" 
         <label htmlFor="company" className={labelClass}>
           Virksomhed
         </label>
-        <input id="company" name="company" placeholder="Valgfrit" className={inputClass} />
+        <input
+          id="company"
+          name="company"
+          placeholder="Valgfrit"
+          className={inputClass}
+        />
       </div>
 
       <div>
@@ -130,7 +151,9 @@ export function ContactForm({ variant = "light" }: { variant?: "light" | "dark" 
       </div>
 
       {error && (
-        <p className="rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-400">{error}</p>
+        <p className="rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-400">
+          {error}
+        </p>
       )}
 
       <button

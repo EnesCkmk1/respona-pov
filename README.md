@@ -4,14 +4,14 @@ Proof of concept for a real-time voice agent on Cloudflare.
 
 ## Tech stack
 
-| Layer | Technology |
-|-------|------------|
-| Frontend | React 19, Vite, Tailwind, Kumo UI |
-| Backend | Cloudflare Workers |
+| Layer           | Technology                                                                             |
+| --------------- | -------------------------------------------------------------------------------------- |
+| Frontend        | React 19, Vite, Tailwind, Kumo UI                                                      |
+| Backend         | Cloudflare Workers                                                                     |
 | Real-time agent | [Agents SDK](https://developers.cloudflare.com/agents/) (Durable Objects + WebSockets) |
-| AI | Workers AI (via `workers-ai-provider`) |
-| Database | Cloudflare D1 (SQLite) |
-| Deploy | Wrangler |
+| AI              | Workers AI (via `workers-ai-provider`)                                                 |
+| Database        | Cloudflare D1 (SQLite)                                                                 |
+| Deploy          | Wrangler                                                                               |
 
 ## Prerequisites
 

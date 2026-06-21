@@ -26,7 +26,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-site-border bg-site-bg/90 backdrop-blur-md">
       <div className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between px-6">
-        <a href="#" className="flex items-center gap-3">
+        <a href="/" className="flex items-center gap-3">
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-site-accent text-white">
             <Mic className="h-4 w-4" strokeWidth={2.25} />
           </span>
@@ -67,7 +67,11 @@ export function SiteHeader() {
             className="flex h-9 w-9 items-center justify-center rounded-md border border-site-border md:hidden"
             onClick={() => setMenuOpen((open) => !open)}
           >
-            {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            {menuOpen ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Menu className="h-4 w-4" />
+            )}
           </button>
         </div>
       </div>
@@ -85,7 +89,11 @@ export function SiteHeader() {
                 {link.label}
               </a>
             ))}
-            <a href="#contact" className="btn-primary mt-1" onClick={() => setMenuOpen(false)}>
+            <a
+              href="#contact"
+              className="btn-primary mt-1"
+              onClick={() => setMenuOpen(false)}
+            >
               Book demo
             </a>
           </div>
