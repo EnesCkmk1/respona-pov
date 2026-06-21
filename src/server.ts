@@ -1,5 +1,7 @@
 import { createWorkersAI } from "workers-ai-provider";
+import { ZodError } from "zod";
 import { callable, routeAgentRequest, type Schedule } from "agents";
+import { contactSchema } from "./lib/contact";
 import { getSchedulePrompt, scheduleSchema } from "agents/schedule";
 import { AIChatAgent, type OnChatMessageOptions } from "@cloudflare/ai-chat";
 import {
@@ -221,6 +223,40 @@ export default {
           { status: 500 }
         );
       }
+    }
+
+    if (url.pathname === "/api/contact" && request.method === "POST") {
+      try {
+        const body = contactSchema.parse(await request.json());
+        const id = crypto.randomUUID();
+
+        await env.DB.prepare(
+          `INSERT INTO contact_submissions (id, name, email, company, message)
+           VALUES (?, ?, ?, ?, ?)`
+        )
+          .bind(id, body.name, body.email, body.company || null, body.message)
+          .run();
+
+        return Response.json({ ok: true, message: "Tak — vi vender tilbage snart!" });
+      } catch (error) {
+        if (error instanceof ZodError) {
+          return Response.json({ error: "Ugyldige felter" }, { status: 400 });
+        }
+        return Response.json(
+          { error: error instanceof Error ? error.message : "Kunne ikke gemme beskeden" },
+          { status: 500 }
+        );
+      }
+    }
+
+    if (url.pathname === "/api/contact" && request.method === "OPTIONS") {
+      return new Response(null, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type"
+        }
+      });
     }
 
     return (

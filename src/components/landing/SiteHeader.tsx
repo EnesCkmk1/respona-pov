@@ -23,13 +23,13 @@ export function SiteHeader() {
   }, [dark]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-kumo-line/60 bg-kumo-base/70 backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-kumo-line/40 bg-kumo-base/60 backdrop-blur-2xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <a href="#" className="group flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-kumo-brand text-white shadow-lg shadow-kumo-brand/25 transition-transform group-hover:scale-105">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-kumo-brand to-violet-600 text-white shadow-lg shadow-kumo-brand/30 transition-transform group-hover:scale-105">
             <Mic className="h-4 w-4" strokeWidth={2.25} />
           </span>
-          <span className="text-base font-semibold tracking-tight text-kumo-default">
+          <span className="text-base font-bold tracking-tight text-kumo-default">
             Voice Agent
           </span>
         </a>
@@ -39,7 +39,7 @@ export function SiteHeader() {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-kumo-inactive transition-colors hover:text-kumo-default"
+              className="text-sm font-medium text-kumo-inactive transition-colors hover:text-kumo-brand"
             >
               {link.label}
             </a>
@@ -51,14 +51,14 @@ export function SiteHeader() {
             type="button"
             onClick={toggleTheme}
             aria-label="Skift tema"
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-kumo-line bg-kumo-elevated text-kumo-default transition-colors hover:bg-kumo-base"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-kumo-line/60 bg-kumo-elevated/80 text-kumo-default transition hover:border-kumo-brand/30"
           >
             {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
 
           <a
             href="#contact"
-            className="hidden rounded-lg bg-kumo-brand px-4 py-2 text-sm font-medium text-white shadow-md shadow-kumo-brand/20 transition hover:brightness-110 sm:inline-flex"
+            className="hidden rounded-xl bg-gradient-to-r from-kumo-brand to-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-kumo-brand/25 transition hover:brightness-110 sm:inline-flex"
           >
             Book demo
           </a>
