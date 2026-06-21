@@ -69,12 +69,12 @@ wscat -c ws://localhost:8000/ws/call/00000000-0000-0000-0000-000000000001
 
 ## How the stubs map to real providers
 
-| Stub | Real target | Where |
-| --- | --- | --- |
-| `services/telephony.py` | Twilio Programmable Voice + Media Streams | TwiML + WS audio |
-| `services/stt.py` | Deepgram Nova-3 streaming | audio frames → transcript |
-| `services/llm.py` | Claude (Haiku/Sonnet) | streaming + tool use for orders |
-| `services/tts.py` | ElevenLabs → Deepgram Aura-2 | stream audio back |
+| Stub                    | Real target                               | Where                           |
+| ----------------------- | ----------------------------------------- | ------------------------------- |
+| `services/telephony.py` | Twilio Programmable Voice + Media Streams | TwiML + WS audio                |
+| `services/stt.py`       | Deepgram Nova-3 streaming                 | audio frames → transcript       |
+| `services/llm.py`       | Claude (Haiku/Sonnet)                     | streaming + tool use for orders |
+| `services/tts.py`       | ElevenLabs → Deepgram Aura-2              | stream audio back               |
 
 To go live, set the keys in `.env`, flip `USE_STUBS=false`, and implement the
 `NotImplementedError` branches one provider at a time.
