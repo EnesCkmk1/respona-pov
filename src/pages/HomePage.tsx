@@ -1,22 +1,26 @@
 import { SiteHeader } from "../components/landing/SiteHeader";
+import { FaqSection } from "../components/landing/FaqSection";
 import {
   ContactSection,
+  DashboardSection,
+  DemoSection,
   FeaturesSection,
   HeroSection,
-  HowItWorksSection,
-  MarqueeSection,
-  SiteFooter
+  SiteFooter,
+  StatsSection
 } from "../components/landing/Sections";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen overflow-x-hidden bg-kumo-elevated text-kumo-default">
+    <div className="min-h-screen bg-site-bg text-site-text antialiased">
       <SiteHeader />
       <main>
         <HeroSection />
-        <MarqueeSection />
+        <DemoSection />
+        <StatsSection />
         <FeaturesSection />
-        <HowItWorksSection />
+        <DashboardSection />
+        <FaqSection />
         <ContactSection />
       </main>
       <SiteFooter />

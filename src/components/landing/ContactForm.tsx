@@ -2,12 +2,18 @@ import { useState, type FormEvent } from "react";
 import { CheckCircle2, Loader2, Mail, Send, User } from "lucide-react";
 import { contactSchema, submitContact } from "../../lib/contact";
 
-const inputClass =
-  "w-full rounded-xl border border-kumo-line/80 bg-kumo-base/60 px-4 py-3 text-sm text-kumo-default placeholder:text-kumo-inactive/70 outline-none transition focus:border-kumo-brand/50 focus:ring-2 focus:ring-kumo-brand/20 backdrop-blur-sm";
-
-export function ContactForm() {
+export function ContactForm({ variant = "light" }: { variant?: "light" | "dark" }) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
+
+  const isDark = variant === "dark";
+  const inputClass = isDark
+    ? "site-input border-white/15 bg-white/5 text-white placeholder:text-white/40 focus:border-emerald-400/60 focus:ring-emerald-400/20"
+    : "site-input";
+  const labelClass = isDark
+    ? "mb-1.5 block text-xs font-medium text-white/55"
+    : "mb-1.5 block text-xs font-medium text-site-muted";
+  const iconClass = isDark ? "text-white/40" : "text-site-muted";
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -41,18 +47,24 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-emerald-500/30 bg-emerald-500/5 px-8 py-14 text-center">
+      <div
+        className={`flex flex-col items-center justify-center rounded-xl px-8 py-14 text-center ${
+          isDark ? "border border-emerald-400/30 bg-emerald-400/5" : "border border-emerald-500/30 bg-emerald-500/5"
+        }`}
+      >
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-500">
           <CheckCircle2 className="h-7 w-7" />
         </div>
-        <h3 className="mb-2 text-xl font-semibold text-kumo-default">Tak for din besked!</h3>
-        <p className="mb-6 max-w-sm text-sm text-kumo-inactive">
+        <h3 className={`mb-2 text-xl font-semibold ${isDark ? "text-white" : "text-site-text"}`}>
+          Tak for din besked!
+        </h3>
+        <p className={`mb-6 max-w-sm text-sm ${isDark ? "text-white/60" : "text-site-muted"}`}>
           Vi vender tilbage hurtigst muligt. Hold øje med din indbakke.
         </p>
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="text-sm font-medium text-kumo-brand hover:underline"
+          className="text-sm font-medium text-emerald-400 hover:underline"
         >
           Send en ny besked
         </button>
@@ -64,11 +76,11 @@ export function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="name" className="mb-1.5 block text-xs font-medium text-kumo-inactive">
+          <label htmlFor="name" className={labelClass}>
             Navn *
           </label>
           <div className="relative">
-            <User className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-kumo-inactive" />
+            <User className={`pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 ${iconClass}`} />
             <input
               id="name"
               name="name"
@@ -79,11 +91,11 @@ export function ContactForm() {
           </div>
         </div>
         <div>
-          <label htmlFor="email" className="mb-1.5 block text-xs font-medium text-kumo-inactive">
+          <label htmlFor="email" className={labelClass}>
             Email *
           </label>
           <div className="relative">
-            <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-kumo-inactive" />
+            <Mail className={`pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 ${iconClass}`} />
             <input
               id="email"
               name="email"
@@ -97,19 +109,14 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="company" className="mb-1.5 block text-xs font-medium text-kumo-inactive">
+        <label htmlFor="company" className={labelClass}>
           Virksomhed
         </label>
-        <input
-          id="company"
-          name="company"
-          placeholder="Valgfrit"
-          className={inputClass}
-        />
+        <input id="company" name="company" placeholder="Valgfrit" className={inputClass} />
       </div>
 
       <div>
-        <label htmlFor="message" className="mb-1.5 block text-xs font-medium text-kumo-inactive">
+        <label htmlFor="message" className={labelClass}>
           Besked *
         </label>
         <textarea
@@ -123,13 +130,13 @@ export function ContactForm() {
       </div>
 
       {error && (
-        <p className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-500">{error}</p>
+        <p className="rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-400">{error}</p>
       )}
 
       <button
         type="submit"
         disabled={status === "loading"}
-        className="group flex w-full items-center justify-center gap-2 rounded-xl bg-kumo-brand px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-kumo-brand/25 transition hover:brightness-110 disabled:opacity-60"
+        className={`btn-primary w-full disabled:opacity-60 ${isDark ? "!bg-emerald-500 hover:!bg-emerald-400" : ""}`}
       >
         {status === "loading" ? (
           <>
@@ -139,7 +146,7 @@ export function ContactForm() {
         ) : (
           <>
             Send besked
-            <Send className="h-4 w-4 transition group-hover:translate-x-0.5" />
+            <Send className="h-4 w-4" />
           </>
         )}
       </button>

@@ -2,8 +2,9 @@ import { useCallback, useState } from "react";
 import { Menu, Mic, Moon, Sun, X } from "lucide-react";
 
 const links = [
+  { href: "#demo", label: "Demo" },
   { href: "#features", label: "Funktioner" },
-  { href: "#how-it-works", label: "Sådan virker det" },
+  { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Kontakt" }
 ];
 
@@ -23,23 +24,23 @@ export function SiteHeader() {
   }, [dark]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-kumo-line/40 bg-kumo-base/60 backdrop-blur-2xl">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <a href="#" className="group flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-kumo-brand to-violet-600 text-white shadow-lg shadow-kumo-brand/30 transition-transform group-hover:scale-105">
+    <header className="sticky top-0 z-50 border-b border-site-border bg-site-bg/90 backdrop-blur-md">
+      <div className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between px-6">
+        <a href="#" className="flex items-center gap-3">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-site-accent text-white">
             <Mic className="h-4 w-4" strokeWidth={2.25} />
           </span>
-          <span className="text-base font-bold tracking-tight text-kumo-default">
-            Voice Agent
+          <span className="text-sm font-extrabold tracking-[0.18em] text-site-text">
+            VOICE AGENT
           </span>
         </a>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-10 md:flex">
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-kumo-inactive transition-colors hover:text-kumo-brand"
+              className="text-sm font-medium text-site-muted transition hover:text-site-text"
             >
               {link.label}
             </a>
@@ -51,22 +52,19 @@ export function SiteHeader() {
             type="button"
             onClick={toggleTheme}
             aria-label="Skift tema"
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-kumo-line/60 bg-kumo-elevated/80 text-kumo-default transition hover:border-kumo-brand/30"
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-site-border text-site-muted transition hover:text-site-text"
           >
             {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
 
-          <a
-            href="#contact"
-            className="hidden rounded-xl bg-gradient-to-r from-kumo-brand to-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-kumo-brand/25 transition hover:brightness-110 sm:inline-flex"
-          >
+          <a href="#contact" className="btn-secondary hidden sm:inline-flex">
             Book demo
           </a>
 
           <button
             type="button"
             aria-label="Menu"
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-kumo-line bg-kumo-elevated md:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-site-border md:hidden"
             onClick={() => setMenuOpen((open) => !open)}
           >
             {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -75,23 +73,19 @@ export function SiteHeader() {
       </div>
 
       {menuOpen && (
-        <nav className="border-t border-kumo-line bg-kumo-base px-6 py-4 md:hidden">
-          <div className="flex flex-col gap-3">
+        <nav className="border-t border-site-border bg-site-bg px-6 py-5 md:hidden">
+          <div className="flex flex-col gap-4">
             {links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm text-kumo-inactive"
+                className="text-sm font-medium text-site-muted"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
               </a>
             ))}
-            <a
-              href="#contact"
-              className="mt-1 inline-flex justify-center rounded-lg bg-kumo-brand px-4 py-2.5 text-sm font-medium text-white"
-              onClick={() => setMenuOpen(false)}
-            >
+            <a href="#contact" className="btn-primary mt-1" onClick={() => setMenuOpen(false)}>
               Book demo
             </a>
           </div>

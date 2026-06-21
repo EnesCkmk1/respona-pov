@@ -1,86 +1,163 @@
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   Bot,
   Check,
-  Globe,
+  Clock,
   Headphones,
   Mic,
   Phone,
-  Sparkles,
-  TrendingUp,
-  Waves,
-  Zap
+  Play,
+  RotateCcw,
+  Waves
 } from "lucide-react";
 import { ContactForm } from "./ContactForm";
 
-const bars = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-
-const marqueeItems = [
-  "React 19",
-  "Cloudflare Workers",
-  "D1 Database",
-  "Agents SDK",
-  "Workers AI",
-  "WebSockets",
-  "Real-time Voice",
-  "Edge Computing"
+const trustPills = [
+  "24/7 tilgængelig",
+  "Flydende dansk (æ ø å)",
+  "Ingen mistede opkald"
 ];
 
-function FloatingOrbs() {
+const stats = [
+  {
+    value: "+30%",
+    label: "Flere henvendelser",
+    description: "Fang dem der giver op når telefonen ikke bliver taget."
+  },
+  {
+    value: "0 sek",
+    label: "Ventetid",
+    description: "Øjeblikkeligt svar — uanset hvor mange der ringer samtidig."
+  },
+  {
+    value: "12t",
+    label: "Sparet pr. uge",
+    description: "Frigør teamet til det der kræver et menneske."
+  },
+  {
+    value: "100%",
+    label: "På dansk",
+    description: "Bygget til dansk — forstår accenter og naturlig tale."
+  }
+];
+
+const features = [
+  {
+    icon: Waves,
+    title: "Flydende stemme",
+    description:
+      "Naturlig dialog uden robot-tone. Gæsterne mærker det som et rigtigt opkald."
+  },
+  {
+    icon: Headphones,
+    title: "Tager imod henvendelser",
+    description: "Optager detaljer, bekræfter og sender data direkte til jeres system."
+  },
+  {
+    icon: Clock,
+    title: "24/7 i drift",
+    description: "Aldrig en pause. Weekender, helligdage og myldretid — alt dækket."
+  },
+  {
+    icon: Bot,
+    title: "Du har kontrollen",
+    description: "I bestemmer tone, scripts og hvilke spørgsmål agenten må besvare."
+  }
+];
+
+const demoLines = [
+  { speaker: "agent", text: "Hej, du har ringet til Voice Agent demo — hvad kan jeg hjælpe med?" },
+  { speaker: "caller", text: "Hej, jeg vil gerne høre om jeres løsning til kundeservice." },
+  { speaker: "agent", text: "Selvfølgelig. Vi tager imod opkald 24/7 med naturlig dansk stemme. Skal jeg booke en demo til jer?" },
+  { speaker: "caller", text: "Ja tak — vi er en voksende webshop med mange support-opkald." },
+  { speaker: "agent", text: "Perfekt. Jeg sender en bekræftelse på email og booker 15 minutter med teamet. God dag!" }
+];
+
+const conversations = [
+  { phone: "+45 31 22 ··", summary: "Demo booket · onsdag 14:00" },
+  { phone: "+45 28 90 ··", summary: "Support-spørgsmål løst" },
+  { phone: "+45 40 17 ··", summary: "Callback planlagt · 16:30" },
+  { phone: "+45 22 64 ··", summary: "FAQ besvaret · ordre status" }
+];
+
+function TrustPills() {
   return (
-    <>
-      <div className="animate-blob pointer-events-none absolute -left-24 top-20 h-72 w-72 rounded-full bg-violet-500/20 blur-3xl" />
-      <div
-        className="animate-blob pointer-events-none absolute -right-16 top-40 h-64 w-64 rounded-full bg-cyan-500/15 blur-3xl"
-        style={{ animationDelay: "-4s" }}
-      />
-      <div
-        className="animate-blob pointer-events-none absolute bottom-10 left-1/3 h-48 w-48 rounded-full bg-kumo-brand/20 blur-3xl"
-        style={{ animationDelay: "-7s" }}
-      />
-    </>
+    <ul className="flex flex-wrap gap-x-6 gap-y-2 border-t border-site-border pt-8 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-site-muted sm:text-xs">
+      {trustPills.map((pill) => (
+        <li key={pill} className="flex items-center gap-2">
+          <span className="h-1 w-1 rounded-full bg-site-accent" />
+          {pill}
+        </li>
+      ))}
+    </ul>
   );
 }
 
-function VoiceDemoCard() {
+function LiveDemoPlayer() {
+  const [lineIndex, setLineIndex] = useState(0);
+  const [playing, setPlaying] = useState(true);
+
+  useEffect(() => {
+    if (!playing) return;
+    const timer = setInterval(() => {
+      setLineIndex((i) => (i + 1) % demoLines.length);
+    }, 2800);
+    return () => clearInterval(timer);
+  }, [playing]);
+
   return (
-    <div className="fade-up fade-up-delay-3 animate-float relative mx-auto w-full max-w-md">
-      <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-kumo-brand/25 via-violet-500/15 to-cyan-500/15 blur-2xl animate-pulse-ring" />
-      <div className="gradient-border card-shine relative overflow-hidden p-6 shadow-2xl shadow-kumo-brand/15">
-        <div className="noise-overlay absolute inset-0 opacity-40" />
-        <div className="relative">
-          <div className="mb-6 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <span className="relative flex h-3 w-3">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-                <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500" />
-              </span>
-              <span className="text-sm font-semibold text-kumo-default">Live agent</span>
-            </div>
-            <span className="rounded-full bg-gradient-to-r from-kumo-brand/20 to-violet-500/20 px-3 py-1 text-xs font-semibold text-kumo-brand ring-1 ring-kumo-brand/20">
-              &lt; 300ms
-            </span>
-          </div>
-
-          <div className="mb-6 flex h-32 items-end justify-center gap-1.5 rounded-2xl bg-kumo-elevated/80 px-5 py-6 ring-1 ring-kumo-line/50">
-            {bars.map((i) => (
-              <div
-                key={i}
-                className="voice-bar w-2 rounded-full bg-gradient-to-t from-violet-500/50 via-kumo-brand to-cyan-400"
-                style={{ animationDelay: `${i * 0.07}s` }}
-              />
-            ))}
-          </div>
-
-          <div className="space-y-3">
-            <div className="rounded-2xl rounded-tl-sm bg-kumo-elevated/90 px-4 py-3.5 text-sm leading-relaxed text-kumo-inactive ring-1 ring-kumo-line/40">
-              Hej! Jeg er jeres voice agent — hvad kan jeg hjælpe med i dag?
-            </div>
-            <div className="ml-6 rounded-2xl rounded-tr-sm bg-gradient-to-br from-kumo-brand/20 to-violet-500/10 px-4 py-3.5 text-sm leading-relaxed text-kumo-default ring-1 ring-kumo-brand/25">
-              Jeg vil gerne høre om jeres løsning til kundeservice.
-            </div>
-          </div>
+    <div className="site-card overflow-hidden shadow-sm">
+      <div className="flex items-center justify-between border-b border-site-border px-5 py-4">
+        <div>
+          <p className="text-xs font-medium text-site-muted">Voice Agent · indgående</p>
+          <p className="text-sm font-semibold text-site-text">Live demo</p>
         </div>
+        <div className="flex items-center gap-2">
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-50" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+          </span>
+          <span className="text-xs font-medium text-emerald-600">Aktiv</span>
+        </div>
+      </div>
+
+      <div className="space-y-3 bg-site-bg/50 p-5 min-h-[220px]">
+        {demoLines.slice(0, lineIndex + 1).map((line, i) => (
+          <div
+            key={i}
+            className={`max-w-[90%] rounded-xl px-4 py-3 text-sm leading-relaxed ${
+              line.speaker === "agent"
+                ? "bg-site-surface text-site-muted ring-1 ring-site-border"
+                : "ml-auto bg-site-accent/10 text-site-text ring-1 ring-site-accent/20"
+            }`}
+          >
+            {line.text}
+          </div>
+        ))}
+      </div>
+
+      <div className="flex items-center justify-between border-t border-site-border px-5 py-3">
+        <div className="flex h-10 items-end gap-1">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <div
+              key={i}
+              className="voice-bar w-1 rounded-full bg-site-accent/70"
+              style={{ animationDelay: `${i * 0.08}s` }}
+            />
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setPlaying((p) => !p);
+            if (!playing) setLineIndex(0);
+          }}
+          className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-site-accent"
+        >
+          {playing ? <RotateCcw className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
+          {playing ? "Afspil igen" : "Afspil"}
+        </button>
       </div>
     </div>
   );
@@ -88,161 +165,95 @@ function VoiceDemoCard() {
 
 export function HeroSection() {
   return (
-    <section className="hero-glow relative overflow-hidden pt-28 pb-16 sm:pt-36 sm:pb-20">
-      <FloatingOrbs />
-      <div className="grid-bg pointer-events-none absolute inset-0 opacity-80" />
-
-      <div className="relative mx-auto grid max-w-6xl items-center gap-16 px-6 lg:grid-cols-2 lg:gap-12">
-        <div>
-          <div className="fade-up mb-7 inline-flex items-center gap-2 rounded-full border border-kumo-brand/30 bg-gradient-to-r from-kumo-brand/10 to-violet-500/10 px-4 py-2 text-xs font-semibold text-kumo-brand shadow-sm shadow-kumo-brand/10">
-            <Sparkles className="h-3.5 w-3.5 animate-pulse" />
-            <span className="animate-shimmer bg-gradient-to-r from-kumo-brand via-violet-500 to-cyan-500 bg-clip-text text-transparent">
-              AI voice · Proof of concept
-            </span>
-          </div>
-
-          <h1 className="fade-up fade-up-delay-1 mb-6 text-[2.75rem] font-extrabold leading-[1.05] tracking-tight sm:text-6xl lg:text-[4rem]">
-            <span className="text-gradient">Stemme-agenter</span>
-            <br />
-            <span className="text-kumo-default">der </span>
-            <span className="text-gradient-accent italic">føles levende</span>
+    <section className="border-b border-site-border bg-site-bg pt-12 pb-16 sm:pt-16 sm:pb-20">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="max-w-3xl">
+          <p className="site-label fade-up mb-5">AI drevet</p>
+          <h1 className="fade-up fade-up-d1 mb-6 text-4xl font-extrabold leading-[1.08] tracking-tight text-site-text sm:text-5xl lg:text-[3.5rem]">
+            Din virksomhed besvarer opkaldet.{" "}
+            <span className="text-site-accent">Selv når I ikke gør.</span>
           </h1>
-
-          <p className="fade-up fade-up-delay-2 mb-10 max-w-xl text-lg leading-relaxed text-kumo-inactive sm:text-xl">
-            Giv kunderne en naturlig samtale — ikke en robot. Real-time AI på Cloudflare
-            edge, klar til at skalere med jer.
+          <p className="fade-up fade-up-d2 mb-8 max-w-2xl text-lg leading-relaxed text-site-muted">
+            AI-drevet stemmeteknologi til dansk kundekontakt. Ingen mistede opkald, ingen
+            ventetid på linjen — kun flere henvendelser og roligere medarbejdere.
           </p>
-
-          <div className="fade-up fade-up-delay-3 flex flex-wrap gap-3">
+          <div className="fade-up fade-up-d3 flex flex-wrap gap-3">
+            <a href="#contact" className="btn-primary">
+              Book gratis demo
+            </a>
             <a
-              href="#contact"
-              className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-kumo-brand to-violet-600 px-6 py-3.5 text-sm font-bold text-white shadow-xl shadow-kumo-brand/30 transition hover:scale-[1.02] hover:shadow-kumo-brand/40 active:scale-[0.98]"
+              href="#demo"
+              className="inline-flex items-center gap-2 px-2 py-3 text-sm font-semibold text-site-text underline-offset-4 hover:underline"
             >
-              Book en demo
+              Hør demoen først
               <ArrowRight className="h-4 w-4" />
             </a>
-            <a
-              href="#features"
-              className="glass-panel inline-flex items-center gap-2 rounded-2xl px-6 py-3.5 text-sm font-semibold text-kumo-default transition hover:scale-[1.02] active:scale-[0.98]"
-            >
-              Udforsk platformen
+          </div>
+          <TrustPills />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function DemoSection() {
+  return (
+    <section id="demo" className="border-b border-site-border bg-site-bg py-20 sm:py-24">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mb-10 max-w-2xl">
+          <p className="site-label mb-3">Live demo</p>
+          <h2 className="text-3xl font-extrabold tracking-tight text-site-text sm:text-4xl">
+            Se hvordan det lyder i praksis
+          </h2>
+          <p className="mt-4 text-site-muted">
+            En kort demo af AI&apos;en i aktion — fra opkald til løst henvendelse.
+          </p>
+        </div>
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+          <LiveDemoPlayer />
+          <div className="flex flex-col justify-center">
+            <ul className="space-y-4">
+              {[
+                "Forstår dansk i realtid",
+                "Håndterer flere opkald samtidig",
+                "Integrerer med jeres workflow"
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-3 text-site-text">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-site-accent/10 text-site-accent">
+                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                  </span>
+                  <span className="font-medium">{item}</span>
+                </li>
+              ))}
+            </ul>
+            <a href="#contact" className="btn-primary mt-10 w-fit">
+              Få din egen demo
             </a>
           </div>
-
-          <dl className="fade-up fade-up-delay-4 mt-14 grid grid-cols-3 gap-6">
-            {[
-              { value: "24/7", label: "Tilgængelig", icon: Globe },
-              { value: "<300ms", label: "Latency", icon: Zap },
-              { value: "Edge", label: "Global", icon: Phone }
-            ].map(({ value, label, icon: Icon }) => (
-              <div key={label} className="group">
-                <Icon className="mb-2 h-4 w-4 text-kumo-brand/70 transition group-hover:text-kumo-brand" />
-                <dt className="text-2xl font-extrabold tracking-tight text-kumo-default sm:text-3xl">
-                  {value}
-                </dt>
-                <dd className="mt-0.5 text-xs font-medium text-kumo-inactive sm:text-sm">{label}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
-
-        <VoiceDemoCard />
       </div>
     </section>
   );
 }
 
-export function MarqueeSection() {
+export function StatsSection() {
   return (
-    <section className="overflow-hidden border-y border-kumo-line/60 bg-kumo-base/50 py-5">
-      <div className="flex w-max animate-marquee gap-8">
-        {[...marqueeItems, ...marqueeItems].map((item, i) => (
-          <span
-            key={`${item}-${i}`}
-            className="flex items-center gap-2 whitespace-nowrap text-sm font-medium text-kumo-inactive"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-kumo-brand to-violet-500" />
-            {item}
-          </span>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-const features = [
-  {
-    icon: Waves,
-    title: "Naturlig stemme",
-    description: "Real-time samtaler med lav latency — som et rigtigt opkald, ikke en chatbot.",
-    accent: "from-cyan-500/20 to-kumo-brand/10",
-    span: "lg:col-span-2 lg:row-span-1"
-  },
-  {
-    icon: Headphones,
-    title: "Kundeservice-ready",
-    description: "Skalerbar infrastruktur der vokser med jeres volumen.",
-    accent: "from-violet-500/20 to-kumo-brand/5",
-    span: ""
-  },
-  {
-    icon: TrendingUp,
-    title: "Analytics",
-    description: "Sessioner, samtaler og indsigt samlet ét sted.",
-    accent: "from-emerald-500/15 to-kumo-brand/5",
-    span: ""
-  },
-  {
-    icon: Bot,
-    title: "Intelligent agent",
-    description: "Workers AI + Agents SDK med tools, scheduling og MCP-integration.",
-    accent: "from-kumo-brand/20 to-violet-500/15",
-    span: "lg:col-span-2"
-  },
-  {
-    icon: Zap,
-    title: "Edge-first",
-    description: "Workers, D1 og Durable Objects — globalt fra dag ét.",
-    accent: "from-amber-500/15 to-kumo-brand/5",
-    span: ""
-  }
-];
-
-export function FeaturesSection() {
-  return (
-    <section id="features" className="relative py-28">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-kumo-brand/40 to-transparent" />
+    <section className="border-b border-site-border bg-site-surface py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-16 max-w-2xl">
-          <p className="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-kumo-brand">
-            Platform
-          </p>
-          <h2 className="mb-5 text-4xl font-extrabold tracking-tight text-kumo-default sm:text-5xl">
-            Alt I behøver —{" "}
-            <span className="text-gradient-accent">ingen kompromiser</span>
+        <div className="mb-14 max-w-2xl">
+          <p className="site-label mb-3">Resultater</p>
+          <h2 className="text-3xl font-extrabold tracking-tight text-site-text sm:text-4xl">
+            Tal I kan høre — og se på bundlinjen
           </h2>
-          <p className="text-lg leading-relaxed text-kumo-inactive">
-            React frontend, Cloudflare backend, D1 database og real-time voice pipeline i én
-            samlet stack.
-          </p>
         </div>
-
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map(({ icon: Icon, title, description, accent, span }) => (
-            <article
-              key={title}
-              className={`card-shine group relative overflow-hidden rounded-3xl border border-kumo-line/60 bg-kumo-base/50 p-7 transition duration-500 hover:-translate-y-1.5 hover:border-kumo-brand/40 hover:shadow-2xl hover:shadow-kumo-brand/10 ${span}`}
-            >
-              <div
-                className={`pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br ${accent} blur-2xl transition group-hover:scale-125`}
-              />
-              <div className="relative">
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-kumo-brand to-violet-600 text-white shadow-lg shadow-kumo-brand/25 transition group-hover:scale-110">
-                  <Icon className="h-5 w-5" strokeWidth={2.25} />
-                </div>
-                <h3 className="mb-2 text-xl font-bold text-kumo-default">{title}</h3>
-                <p className="text-sm leading-relaxed text-kumo-inactive">{description}</p>
-              </div>
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map(({ value, label, description }) => (
+            <article key={label} className="border-t-2 border-site-accent pt-6">
+              <p className="text-4xl font-extrabold tracking-tight text-site-text">{value}</p>
+              <p className="mt-2 text-sm font-bold uppercase tracking-wide text-site-text">
+                {label}
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-site-muted">{description}</p>
             </article>
           ))}
         </div>
@@ -251,58 +262,28 @@ export function FeaturesSection() {
   );
 }
 
-const steps = [
-  {
-    step: "01",
-    title: "Kunden ringer",
-    description: "Voice input fanges og streames til agenten i real-time.",
-    icon: Phone
-  },
-  {
-    step: "02",
-    title: "AI forstår",
-    description: "Workers AI behandler samtalen med fuld kontekst og tools.",
-    icon: Bot
-  },
-  {
-    step: "03",
-    title: "Naturligt svar",
-    description: "TTS leverer et menneskeligt svar — hurtigt og præcist.",
-    icon: Mic
-  }
-];
-
-export function HowItWorksSection() {
+export function FeaturesSection() {
   return (
-    <section id="how-it-works" className="border-y border-kumo-line/50 bg-kumo-base/40 py-28">
+    <section id="features" className="border-b border-site-border bg-site-bg py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-16 text-center">
-          <p className="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-kumo-brand">
-            Flow
-          </p>
-          <h2 className="text-4xl font-extrabold tracking-tight text-kumo-default sm:text-5xl">
-            Fra stemme til svar — på sekunder
+        <div className="mb-14 max-w-2xl">
+          <p className="site-label mb-3">Platform</p>
+          <h2 className="text-3xl font-extrabold tracking-tight text-site-text sm:text-4xl">
+            Integreret direkte i jeres daglige drift
           </h2>
         </div>
-
-        <div className="grid gap-6 md:grid-cols-3">
-          {steps.map(({ step, title, description, icon: Icon }, index) => (
-            <div
-              key={step}
-              className="glass-panel group relative rounded-3xl p-8 transition hover:border-kumo-brand/30 hover:shadow-xl hover:shadow-kumo-brand/5"
+        <div className="grid gap-6 sm:grid-cols-2">
+          {features.map(({ icon: Icon, title, description }) => (
+            <article
+              key={title}
+              className="site-card group p-8 transition hover:border-site-accent/40 hover:shadow-md"
             >
-              {index < steps.length - 1 && (
-                <div className="absolute -right-3 top-1/2 hidden h-px w-6 bg-gradient-to-r from-kumo-brand/50 to-transparent md:block" />
-              )}
-              <div className="mb-6 flex items-center justify-between">
-                <span className="text-3xl font-black text-kumo-brand/30">{step}</span>
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-kumo-brand/10 text-kumo-brand transition group-hover:bg-kumo-brand group-hover:text-white">
-                  <Icon className="h-5 w-5" />
-                </div>
+              <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-site-accent text-white transition group-hover:scale-105">
+                <Icon className="h-5 w-5" strokeWidth={2} />
               </div>
-              <h3 className="mb-2 text-lg font-bold text-kumo-default">{title}</h3>
-              <p className="text-sm leading-relaxed text-kumo-inactive">{description}</p>
-            </div>
+              <h3 className="mb-2 text-xl font-bold text-site-text">{title}</h3>
+              <p className="text-sm leading-relaxed text-site-muted">{description}</p>
+            </article>
           ))}
         </div>
       </div>
@@ -310,57 +291,103 @@ export function HowItWorksSection() {
   );
 }
 
-const perks = [
-  "Gratis intro-samtale",
-  "Skræddersyet demo",
-  "Svar inden 24 timer",
-  "Ingen binding"
-];
+export function DashboardSection() {
+  return (
+    <section className="border-b border-site-border bg-site-surface py-20 sm:py-24">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="site-label mb-3">Dashboard</p>
+            <h2 className="text-3xl font-extrabold tracking-tight text-site-text sm:text-4xl">
+              Hele driften. Samlet ét sted.
+            </h2>
+            <p className="mt-3 text-site-muted">Bygget til teams — ikke til IT-folk.</p>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-site-muted">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-50" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            </span>
+            Live · Demo workspace
+          </div>
+        </div>
+
+        <div className="site-card overflow-hidden shadow-sm">
+          <div className="grid gap-px bg-site-border lg:grid-cols-[1fr_1.2fr]">
+            <div className="bg-site-surface p-6 sm:p-8">
+              <p className="text-xs font-semibold uppercase tracking-wider text-site-muted">
+                Overblik i dag
+              </p>
+              <div className="mt-6 grid grid-cols-2 gap-6">
+                {[
+                  { label: "Opkald", value: "147", delta: "+22%" },
+                  { label: "Løst rate", value: "94%", delta: "+8%" },
+                  { label: "Gns. tid", value: "2:14", delta: "-18%" },
+                  { label: "Eskaleret", value: "9", delta: "−3" }
+                ].map(({ label, value, delta }) => (
+                  <div key={label}>
+                    <p className="text-xs text-site-muted">{label}</p>
+                    <p className="mt-1 text-2xl font-extrabold text-site-text">{value}</p>
+                    <p className="mt-1 text-xs font-semibold text-site-accent">{delta}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="bg-site-bg/40 p-6 sm:p-8">
+              <p className="text-xs font-semibold uppercase tracking-wider text-site-muted">
+                Seneste samtaler
+              </p>
+              <ul className="mt-4 divide-y divide-site-border">
+                {conversations.map(({ phone, summary }) => (
+                  <li key={phone} className="flex items-center justify-between py-3.5 first:pt-0">
+                    <div>
+                      <p className="text-sm font-semibold text-site-text">{phone}</p>
+                      <p className="text-xs text-site-muted">{summary}</p>
+                    </div>
+                    <Phone className="h-4 w-4 text-site-accent/60" />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export function ContactSection() {
   return (
-    <section id="contact" className="relative py-28">
-      <FloatingOrbs />
-      <div className="relative mx-auto max-w-6xl px-6">
-        <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+    <section id="contact" className="bg-site-dark py-20 text-white sm:py-24">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="grid gap-14 lg:grid-cols-2 lg:gap-16">
           <div>
-            <p className="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-kumo-brand">
-              Kontakt
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-400/90">
+              Kom i gang
             </p>
-            <h2 className="mb-5 text-4xl font-extrabold tracking-tight text-kumo-default sm:text-5xl">
-              Lad os tage en{" "}
-              <span className="text-gradient-accent">snak</span>
+            <h2 className="mb-5 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
+              Klar til at høre mere?
             </h2>
-            <p className="mb-8 text-lg leading-relaxed text-kumo-inactive">
-              Udfyld formularen — så vender vi tilbage med en demo skræddersyet til jeres
-              use case. Ingen spam, ingen salgs-pres.
+            <p className="mb-8 max-w-md text-base leading-relaxed text-white/65">
+              15 minutter. Vi viser jer systemet og regner ROI&apos;en igennem sammen med jer.
+              Ingen binding.
             </p>
-
-            <ul className="mb-8 space-y-3">
-              {perks.map((perk) => (
-                <li key={perk} className="flex items-center gap-3 text-sm text-kumo-default">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-500">
-                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
-                  </span>
-                  {perk}
-                </li>
-              ))}
+            <ul className="space-y-3 text-sm text-white/80">
+              {["Gratis intro-samtale", "Skræddersyet demo", "Svar inden 24 timer"].map(
+                (item) => (
+                  <li key={item} className="flex items-center gap-3">
+                    <Check className="h-4 w-4 text-emerald-400" strokeWidth={3} />
+                    {item}
+                  </li>
+                )
+              )}
             </ul>
-
-            <a
-              href="mailto:larslarsen200303@gmail.com"
-              className="inline-flex items-center gap-2 text-sm font-medium text-kumo-brand hover:underline"
-            >
-              Eller skriv direkte til larslarsen200303@gmail.com
-            </a>
           </div>
 
-          <div className="gradient-border glass-panel rounded-3xl p-8 shadow-2xl shadow-kumo-brand/10">
-            <h3 className="mb-1 text-lg font-bold text-kumo-default">Send en besked</h3>
-            <p className="mb-6 text-sm text-kumo-inactive">
-              Vi læser hver henvendelse personligt.
-            </p>
-            <ContactForm />
+          <div className="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur sm:p-8">
+            <h3 className="mb-1 text-lg font-bold">Send en besked</h3>
+            <p className="mb-6 text-sm text-white/55">Vi læser hver henvendelse personligt.</p>
+            <ContactForm variant="dark" />
           </div>
         </div>
       </div>
@@ -370,19 +397,28 @@ export function ContactSection() {
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-kumo-line/60 py-10">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
-        <div className="flex items-center gap-2.5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-kumo-brand to-violet-600 text-white">
+    <footer className="border-t border-site-border bg-site-bg py-10">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-6 sm:flex-row">
+        <div className="flex items-center gap-3">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-site-accent text-white">
             <Mic className="h-3.5 w-3.5" />
           </span>
-          <span className="text-sm text-kumo-inactive">
-            © {new Date().getFullYear()} Voice Agent PoV
-          </span>
+          <span className="text-xs font-bold tracking-[0.16em] text-site-text">VOICE AGENT</span>
         </div>
-        <p className="text-xs font-medium text-kumo-inactive">
-          React · Lucide · Cloudflare · Tailwind
+        <p className="text-center text-xs text-site-muted">
+          © {new Date().getFullYear()} Voice Agent PoV · React · Cloudflare · D1
         </p>
+        <div className="flex gap-6 text-xs font-medium text-site-muted">
+          <a href="#features" className="hover:text-site-text">
+            Funktioner
+          </a>
+          <a href="#faq" className="hover:text-site-text">
+            FAQ
+          </a>
+          <a href="#contact" className="hover:text-site-text">
+            Kontakt
+          </a>
+        </div>
       </div>
     </footer>
   );
