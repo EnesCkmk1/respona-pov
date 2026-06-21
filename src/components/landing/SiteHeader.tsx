@@ -65,6 +65,13 @@ export function SiteHeader() {
           </button>
 
           <a
+            href="/dashboard"
+            className="btn-ghost hidden !py-2.5 !text-sm sm:inline-flex"
+          >
+            Log ind
+          </a>
+
+          <a
             href="#contact"
             className="btn-primary hidden !py-2.5 !text-sm sm:inline-flex"
           >
