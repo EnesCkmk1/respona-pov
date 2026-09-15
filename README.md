@@ -1,144 +1,117 @@
 # Respona
 
-> En dansk AI-telefonagent til restauranter — fra opkald til ordre, uden at
-> personalet skal løfte røret.
+> A Danish AI phone agent for restaurants — from a phone call to an order, without staff having to pick up.
 
 [![CI](https://github.com/EnesCkmk1/respona-pov/actions/workflows/ci.yml/badge.svg)](https://github.com/EnesCkmk1/respona-pov/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-f8f4ee?labelColor=141310)](LICENSE)
-[![Status: PoV](https://img.shields.io/badge/status-PoV-c9875d?labelColor=141310)](#status)
+[![License: MIT](https://img.shields.io/badge/License-MIT-18181b.svg?style=flat-square)](LICENSE)
+[![Status: PoV](https://img.shields.io/badge/status-proof%20of%20value-2563eb.svg?style=flat-square)](#where-are-we-now)
 
-Respona er et open-source proof of value for restauranter, der vil automatisere
-telefoniske bestillinger. Projektet samler et marketing-site, et
-restaurant-dashboard, en multi-tenant database og en voice-backend i ét repo.
+Respona is an open-source proof of value for restaurants that want to automate phone orders. It brings together a marketing site, restaurant dashboard, multi-tenant database, and voice backend in one repository.
 
-## Hvor står vi?
+## Where are we now?
 
-| Klar nu                                 | På vej til produktion                      |
-| --------------------------------------- | ------------------------------------------ |
-| Landing page og restaurant-dashboard    | Ægte login og live-data                    |
-| Ordre-flow i dansk stub-mode            | Telefoni, streaming-STT og naturlig stemme |
-| Multi-tenant Supabase-skema med RLS     | EU-hosting, samtykke og produktionsdrift   |
-| Simulerede opkald via REST og WebSocket | Realtime-ordrer i dashboardet              |
+| Ready now                               | On the path to production                              |
+| --------------------------------------- | ------------------------------------------------------ |
+| Landing page and restaurant dashboard   | Real authentication and live data                      |
+| Danish order flow in stub mode          | Telephony, streaming speech-to-text, and natural voice |
+| Multi-tenant Supabase schema with RLS   | EU hosting, consent, and operations                    |
+| Simulated calls over REST and WebSocket | Live orders in the dashboard                           |
 
-> [!IMPORTANT]
-> Dette er en PoV — ikke en produktionsklar telefoniløsning endnu. Den kører
-> bevidst uden betalte AI- eller telefoni-API'er som standard.
+> **Note:** This is a proof of value, not a production-ready phone agent. The current voice flow simulates the call journey; it does not connect to a live phone number or use real-time speech services yet.
 
-## Arkitektur
+## Architecture
 
 ```mermaid
 flowchart LR
-  Call[Telefonopkald] --> Voice[FastAPI voice-backend]
-  Voice --> STT[Speech-to-text]
-  STT --> Agent[Ordre-agent]
-  Agent --> TTS[Text-to-speech]
-  Agent --> DB[(Supabase)]
-  DB --> Dash[Restaurant-dashboard]
-  Web[Marketing-site] --> Dash
+    Call[Phone call] --> Voice[FastAPI voice backend]
+    Voice --> STT[Speech-to-text]
+    STT --> Agent[Order agent]
+    Agent --> TTS[Text-to-speech]
+    Agent --> DB[(Supabase)]
+    DB --> Dashboard[Restaurant dashboard]
+    Web[Marketing site] --> Dashboard
 ```
 
-| Del             | Teknologi                                    | Formål                                           |
-| --------------- | -------------------------------------------- | ------------------------------------------------ |
-| Web + dashboard | React 19, Vite, Tailwind, Cloudflare Workers | Landing page, kontaktformular og restaurant-UI   |
-| Data            | Supabase, Postgres, RLS                      | Tenant-isolation, menukort, ordrer og opkaldslog |
-| Voice           | FastAPI                                      | Telefoni → STT → agent → TTS samt ordre-API      |
+| Area              | Technology                                       |
+| ----------------- | ------------------------------------------------ |
+| Web and dashboard | React 19, Vite, Tailwind CSS, Cloudflare Workers |
+| Data              | Supabase, PostgreSQL, Row Level Security         |
+| Voice service     | FastAPI                                          |
 
-## Funktioner
+## Features
 
-- Dansk ordreagent med menu-matching, antalforståelse, kurv og afslutning.
-- Dashboard med ordrer, menukort, tilgængelighed og restaurantindstillinger.
-- Simuleret opkald, der kan oprette en ordre helt uden API-nøgler.
-- Tenant-isolation via Supabase RLS.
-- Kontaktformular med rate limiting, honeypot, CORS og security headers.
-- CI på alle pushes og pull requests.
+- A Danish landing page for the product
+- A restaurant dashboard with order and table views
+- Simulated call flows through REST and WebSocket endpoints
+- A multi-tenant PostgreSQL schema with Row Level Security policies
+- A clear route from proof of value to a real voice stack
 
-## Teknologier
+## Technology
 
-<p>
-  <img src="https://skillicons.dev/icons?i=ts,py,react,nodejs,fastapi,postgres,supabase,cloudflare,docker&perline=9" alt="TypeScript, Python, React, Node.js, FastAPI, PostgreSQL, Supabase, Cloudflare og Docker">
-</p>
+<img src="https://skillicons.dev/icons?i=ts,py,react,vite,nodejs,fastapi,postgres,supabase,cloudflare,docker&perline=10" alt="TypeScript, Python, React, Vite, Node.js, FastAPI, PostgreSQL, Supabase, Cloudflare and Docker">
 
-## Kom i gang
+## Getting started
 
-### 1. Web og dashboard
+### 1. Run the web dashboard
 
 ```bash
 npm install
 npm run dev
 ```
 
-Åbn [http://localhost:5173](http://localhost:5173) — dashboardet ligger på
-`/dashboard`.
+Open `http://localhost:5173`.
 
-### 2. Voice-backend i stub-mode
+### 2. Run the voice backend in stub mode
 
-```bash
+```powershell
 cd backend
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --port 8000
 ```
 
-API-dokumentationen er derefter på [http://localhost:8000/docs](http://localhost:8000/docs).
+The API is then available at `http://localhost:8000`, with interactive documentation at `/docs`.
 
-Prøv et komplet simuleret opkald:
+### 3. Set up the local database
 
 ```bash
-curl -X POST http://localhost:8000/restaurants/00000000-0000-0000-0000-000000000001/simulate-call \
-  -H "Content-Type: application/json" \
-  -d '{"utterances":["Hej, jeg vil bestille to margherita","Og en cola","Det var det, tak"]}'
+npx supabase start
+npx supabase db reset
 ```
 
-### 3. Lokal database (valgfrit)
+See [backend/README.md](backend/README.md) for environment variables and the planned production voice architecture.
 
-```bash
-cd supabase
-supabase start
-supabase db reset
-```
-
-Det kræver Docker. Se også [supabase/README.md](supabase/README.md) og
-[backend/README.md](backend/README.md) for opsætning og API-detaljer.
-
-## Repo-guide
+## Repository guide
 
 ```text
-src/         React-app: marketing-site og /dashboard
-backend/     FastAPI voice-backend og ordre-agent
-supabase/    Database, RLS-migrations og dev-seed
-migrations/  Cloudflare D1 for kontaktformularen
-.github/     CI-workflow
+src/                    React application and dashboard
+workers/                Cloudflare Worker entry points
+backend/                FastAPI voice service
+supabase/migrations/    PostgreSQL schema and RLS policies
+.github/workflows/      Continuous integration
 ```
 
-## Kvalitet
+## Quality
+
+Every push and pull request runs the project checks in GitHub Actions.
 
 ```bash
 npm run check
 ```
 
-Kommandoen validerer formattering, lint og TypeScript. Den samme kontrol kører
-automatisk i GitHub Actions på hver push og pull request.
-
 ## Roadmap
 
-1. Forbind dashboardet med FastAPI-backenden med mock-fallback.
-2. Tilføj Supabase Auth, ægte ordrer og Realtime.
-3. Tilføj test-suite for menu-matching, totaler og ordreafslutning.
-4. Integrér telefoni, streaming-STT, LLM og TTS — én provider ad gangen.
-5. Gør produktion klar med EU-region, samtykke ved optagelse og robust drift.
+- [ ] Supabase Auth and real restaurant accounts
+- [ ] Live order data in the dashboard
+- [ ] Telephony integration
+- [ ] Streaming speech-to-text and text-to-speech
+- [ ] Production agent workflow with human handoff
 
-## Bidrag og sikkerhed
+## Contributing and security
 
-Bidrag er velkomne. Læs [CONTRIBUTING.md](CONTRIBUTING.md), før du åbner en
-pull request. Sikkerhedsproblemer rapporteres privat efter
-[SECURITY.md](SECURITY.md).
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. For security issues, follow the private reporting process in [SECURITY.md](SECURITY.md).
 
-**Commit aldrig** API-nøgler, telefonnumre, kundeoplysninger eller
-opkaldsoptagelser. Brug `.env.example` og `backend/.env.example` som
-skabeloner.
+## License
 
-## Licens
-
-Respona er udgivet under [MIT-licensen](LICENSE). Du må frit bruge, ændre og
-distribuere koden — også kommercielt — når licensnoticen bevares.
+Released under the [MIT License](LICENSE).
