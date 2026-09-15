@@ -52,6 +52,12 @@ flowchart LR
 - Kontaktformular med rate limiting, honeypot, CORS og security headers.
 - CI på alle pushes og pull requests.
 
+## Teknologier
+
+<p>
+  <img src="https://skillicons.dev/icons?i=ts,py,react,nodejs,fastapi,postgres,supabase,cloudflare,docker&perline=9" alt="TypeScript, Python, React, Node.js, FastAPI, PostgreSQL, Supabase, Cloudflare og Docker">
+</p>
+
 ## Kom i gang
 
 ### 1. Web og dashboard
