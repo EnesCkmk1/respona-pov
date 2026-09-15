@@ -155,3 +155,15 @@ Se `supabase/README.md` og `backend/README.md` for detaljer.
 - Marketing-sitet deployes med `npm run deploy` (Wrangler → Cloudflare).
 - D1 (`migrations/`) bruges **kun** til marketing-kontaktformularen — ikke voice-data.
 - Voice-data lever i Supabase (`supabase/`).
+
+---
+
+## Open source
+
+Respona udgives under [MIT-licensen](LICENSE). Det betyder, at du frit må
+bruge, ændre, distribuere og også anvende koden kommercielt, så licensnoticen
+bevares.
+
+Bidrag er velkomne — se [CONTRIBUTING.md](CONTRIBUTING.md). Rapportér
+sikkerhedsproblemer efter retningslinjerne i [SECURITY.md](SECURITY.md), og
+commit aldrig nøgler, telefonnumre, kundedata eller opkaldsoptagelser.
